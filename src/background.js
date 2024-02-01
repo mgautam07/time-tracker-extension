@@ -5,25 +5,25 @@ let prevUrl = "newtab"
 
 // initialize database
 // chrome.runtime.onConnect.addListener(function() {
-  let db;
-  const request = indexedDB.open("tte", 2);
-  request.onerror = (event) => {
-    console.error("Why didn't you allow my web app to use IndexedDB?!");
-  };
-  request.onsuccess = (event) => {
-    db = event.target.result
-  };
+let db
+const request = indexedDB.open("tte", 3)
+request.onerror = (event) => {
+  console.error("Why didn't you allow my web app to use IndexedDB?!")
+}
+request.onsuccess = (event) => {
+  db = event.target.result
+}
 
   
   // This event is only implemented in recent browsers
-  request.onupgradeneeded = (event) => {
-    // Save the IDBDatabase interface
-    const db = event.target.result
-    
+request.onupgradeneeded = (event) => {
+  // Save the IDBDatabase interface
+  const db = event.target.result
+  
   // Create an objectStore for this database
   const objectStore = db.createObjectStore("time", { keyPath: "date" })
   objectStore.createIndex("date", "date", { unique: true })
-};
+}
 
 
 // function to update data and url
@@ -33,7 +33,7 @@ function urlChange(newUrl) {
     return
   }
   if (prevUrl === "") {
-    prevUrl = newUrl.split("/")[2];
+    prevUrl = newUrl.split("/")[2]
     time = new Date().getTime()
     return
   }
@@ -48,7 +48,7 @@ function urlChange(newUrl) {
     prevUrl = ""
   }
   else {
-    prevUrl = newUrl.split("/")[2];
+    prevUrl = newUrl.split("/")[2]
   }
   time = new Date().getTime()
 }
@@ -91,6 +91,17 @@ function addTimeToDB() {
         addDataAgain.onsuccess = (event) => {
           data = {}
         }
+        // let arr = []
+        // for (let key in oldData) {
+        //   arr.push({'url': key, 'time': oldData[key]})
+        // }
+        // arr.sort((a, b) => {
+        //   return b.time > a.time
+        // })
+        // chrome.storage.local.set({'tte': {
+        //   date: d,
+        //   data: arr
+        // }})
       }
     }
   }
@@ -104,13 +115,13 @@ chrome.windows.onFocusChanged.addListener(function(windowId) {
       urlChange(tabs[0].url)
     })
   }
-});
+})
 
 chrome.tabs.onActivated.addListener(function(activeInfo) {
   chrome.tabs.get(activeInfo.tabId, function(tab) {
     urlChange(tab.url)
-  });
-});
+  })
+})
 
 chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
   urlChange(tab.url)
