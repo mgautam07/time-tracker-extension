@@ -1,31 +1,16 @@
 import React, { useEffect, useState } from 'react'
-import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js'
-import { Doughnut } from 'react-chartjs-2'
-
-ChartJS.register(ArcElement, Tooltip, Legend)
+import { PieChart, Pie, Tooltip } from 'recharts'
 
 function DoughtnutChart(props) {
 
-  const [displayData, setDisplayData] = useState({
-    datasets: [
-      {
-        data: [1,1,1,1],
-        backgroundColor: [
-          '#FF6384',
-          '#36A2EB',
-          '#FFCE56',
-          '#FF6384',
-          '#36A2EB',
-          '#FFCE56',
-          '#FF6384',
-          '#36A2EB',
-          '#FFCE56',
-          '#FF6384',
-        ],
-        borderWidth: 0,
-      },
-    ],
-  })
+  const [displayData, setDisplayData] = useState([
+    {value: 400 },
+    {value: 300 },
+    {value: 300 },
+    {value: 200 },
+    {value: 278 },
+    {value: 189 },
+  ])
   useEffect(() => {
     let db
     const request = indexedDB.open("tte")
@@ -43,43 +28,34 @@ function DoughtnutChart(props) {
       const getDataRequest = obs.get(props.date.format('M/DD/YYYY'))
       getDataRequest.onsuccess = (event) => {
         let data = event.target.result
+        console.log(event)
         if(data) {
           data = data.data
-          let arr = [], chartData = []
+          let arr = []
           for (let key in data) {
-            arr.push({'url': key, 'time': data[key]})
+            arr.push({'name': key, 'value': Math.floor(data[key])})
           }
           arr.sort((a, b) => {
-            return b.time > a.time
+            return a.value - b.value
           })
-          for(let i = 0; i < Math.min(arr.length, 10); i++) {
-            chartData.push(Math.floor(arr[i].time))
-          }
-          let copyDisplayData = {...displayData}
-          copyDisplayData.datasets[0].data = chartData
-          console.log(copyDisplayData)
-          setDisplayData(copyDisplayData)
+            setDisplayData(arr)
+            console.log(displayData)
         } else {
-
-        } // change
+          setDisplayData([{'name':'no record','value': 1}])
+        }
       }
     }
   }, [props.date])
-  // useEffect(() => {
-  //   chrome.storage.local.get(['tte'], (result) => {
-  //     console.log(result)
-  //   })
-  // }, [])
-  // useEffect(() => {
-  //   console.log(props.date)
-  // }, [props.date])
   return (
     <div>
-      {console.log(props.date.format('M/DD/YYYY'))}
-      <Doughnut data={displayData} redraw={true}/>
+        <PieChart width={200} height={200}>
+          <Pie dataKey="value" data={displayData} innerRadius={40} outerRadius={80} fill="#82ca9d" startAngle={90} endAngle={450} />
+          <Tooltip />
+        </PieChart>
       {console.log(displayData)}
     </div>
   )
+  
 }
 
 export default DoughtnutChart

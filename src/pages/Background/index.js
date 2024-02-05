@@ -4,13 +4,9 @@ let prevUrl = 'newtab';
 
 // initialize database
 // chrome.runtime.onConnect.addListener(function() {
-let db;
 const request = indexedDB.open('tte', 2);
 request.onerror = (event) => {
   console.error("Why didn't you allow my web app to use IndexedDB?!");
-};
-request.onsuccess = (event) => {
-  db = event.target.result;
 };
 
 // This event is only implemented in recent browsers
@@ -45,12 +41,12 @@ function urlChange(newUrl) {
   } else {
     prevUrl = newUrl.split('/')[2];
   }
-  time = new Date().getTime();
+    time = new Date().getTime();
 }
 
 function addTimeToDB() {
   let db;
-  const request = indexedDB.open('tte');
+    const request = indexedDB.open('tte');
   request.onerror = (event) => {
     console.error('Database error: ', event.target.errorCode);
   };
@@ -61,10 +57,10 @@ function addTimeToDB() {
       console.error('Database error: ', event.target.errorCode);
     };
     const obs = transaction.objectStore('time');
-    const d = new Date().toLocaleDateString();
+        const d = new Date().toLocaleDateString();
     const getDataRequest = obs.get(d);
     getDataRequest.onsuccess = (event) => {
-      if (event.target.result === undefined) {
+            if (event.target.result === undefined) {
         const dataadd = { date: d, data: data };
         const addDataFirstTime = obs.add(dataadd);
         addDataFirstTime.onsuccess = (event) => {
@@ -72,7 +68,7 @@ function addTimeToDB() {
         };
       } else {
         let oldData = event.target.result.data;
-        for (let key in data) {
+                for (let key in data) {
           if (key === undefined) {
             continue;
           }
@@ -116,7 +112,7 @@ chrome.windows.onRemoved.addListener(function (windowId) {
 });
 
 chrome.alarms.onAlarm.addListener(function (alarm) {
-  addTimeToDB();
+    addTimeToDB();
 });
 
 chrome.alarms.create('addData', { periodInMinutes: 1, delayInMinutes: 1 });
