@@ -1,6 +1,9 @@
 let time = new Date().getTime();
 let data = {};
 let prevUrl = 'newtab';
+let websitesVisited = 0;
+let totalTimeSpent = 0;
+let averageTime = 0;
 
 // initialize database
 // chrome.runtime.onConnect.addListener(function() {
@@ -22,6 +25,7 @@ request.onupgradeneeded = (event) => {
 // function to update data and url
 
 function urlChange(newUrl) {
+  console.log(data)
   if (newUrl === undefined || (prevUrl === '' && newUrl === '')) {
     return;
   }
@@ -41,12 +45,13 @@ function urlChange(newUrl) {
   } else {
     prevUrl = newUrl.split('/')[2];
   }
-    time = new Date().getTime();
+  totalTimeSpent += Math.floor((endTime - time) / 1000)
+  time = new Date().getTime();
 }
 
 function addTimeToDB() {
   let db;
-    const request = indexedDB.open('tte');
+  const request = indexedDB.open('tte');
   request.onerror = (event) => {
     console.error('Database error: ', event.target.errorCode);
   };
@@ -56,29 +61,34 @@ function addTimeToDB() {
     transaction.onerror = (event) => {
       console.error('Database error: ', event.target.errorCode);
     };
+    console.log(data)
     const obs = transaction.objectStore('time');
-        const d = new Date().toLocaleDateString();
+    const d = new Date().toLocaleDateString();
     const getDataRequest = obs.get(d);
     getDataRequest.onsuccess = (event) => {
-            if (event.target.result === undefined) {
-        const dataadd = { date: d, data: data };
+      if (event.target.result === undefined) {
+        const dataadd = { date: d, data: data, totalTimeSpent: totalTimeSpent, websitesVisited: websitesVisited };
         const addDataFirstTime = obs.add(dataadd);
         addDataFirstTime.onsuccess = (event) => {
           data = {};
         };
       } else {
         let oldData = event.target.result.data;
-                for (let key in data) {
+        console.log(oldData)
+        for (let key in data) {
           if (key === undefined) {
             continue;
           }
           if (oldData[key] === undefined) {
-            oldData[key] = Math.trunc(data[key]);
+            oldData[key] = Math.floor(data[key]);
+            websitesVisited++;
           } else {
-            oldData[key] = oldData[key] + Math.trunc(data[key]);
+            oldData[key] = oldData[key] + Math.floor(data[key]);
           }
         }
-        const addDataAgain = obs.put({ date: d, data: oldData });
+        const addDataAgain = obs.put({ date: d, data: oldData, websitesVisited: websitesVisited, totalTimeSpent: oldData.totalTimeSpent + totalTimeSpent });
+        console.log(websitesVisited)
+        console.log(totalTimeSpent)
         addDataAgain.onsuccess = (event) => {
           data = {};
         };
@@ -115,4 +125,4 @@ chrome.alarms.onAlarm.addListener(function (alarm) {
     addTimeToDB();
 });
 
-chrome.alarms.create('addData', { periodInMinutes: 1, delayInMinutes: 1 });
+chrome.alarms.create('addData', { periodInMinutes: 0.5, delayInMinutes: 0.5 });
