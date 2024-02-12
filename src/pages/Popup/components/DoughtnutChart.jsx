@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { PieChart, Pie, Tooltip } from 'recharts'
 
 function DoughtnutChart(props) {

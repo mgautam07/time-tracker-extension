@@ -1,9 +1,6 @@
 let time = new Date().getTime();
 let data = {};
 let prevUrl = 'newtab';
-let websitesVisited = 0;
-let totalTimeSpent = 0;
-let averageTime = 0;
 
 // initialize database
 // chrome.runtime.onConnect.addListener(function() {
@@ -36,17 +33,39 @@ function urlChange(newUrl) {
   }
   const endTime = new Date().getTime();
   if (data[prevUrl] >= 1) {
-    data[prevUrl] = (endTime - time) / 1000 + data[prevUrl];
+    data[prevUrl] = Math.floor((endTime - time) / 1000) + data[prevUrl];
   } else {
-    data[prevUrl] = (endTime - time) / 1000;
+    data[prevUrl] = Math.floor((endTime - time) / 1000);
   }
   if (newUrl === '') {
     prevUrl = '';
   } else {
     prevUrl = newUrl.split('/')[2];
   }
-  totalTimeSpent += Math.floor((endTime - time) / 1000)
+  // totalTimeSpent += Math.floor((endTime - time) / 1000)
   time = new Date().getTime();
+}
+
+function handleTime(time)
+{
+  let timeString = ""
+  const hours = Math.floor(time / 3600)
+  time = time % 3600
+  if(hours !== 0)
+  {
+    timeString = timeString + hours + 'h '
+  }
+  const minutes = Math.floor(time / 60)
+  if(minutes !== 0)
+  {
+    timeString = timeString + minutes + 'm'
+  }
+  if(hours === 0)
+  {
+    time = time % 60
+    timeString = timeString + ' ' + time + 's'
+  }
+  return timeString
 }
 
 function addTimeToDB() {
@@ -67,13 +86,29 @@ function addTimeToDB() {
     const getDataRequest = obs.get(d);
     getDataRequest.onsuccess = (event) => {
       if (event.target.result === undefined) {
-        const dataadd = { date: d, data: data, totalTimeSpent: totalTimeSpent, websitesVisited: websitesVisited };
+        let websitesVisited = 0
+        let totalTimeSpent = 0
+        let averageTimeSpent
+        for (let key in data) {
+          if (key === undefined) {
+            continue
+          }
+          websitesVisited++
+          totalTimeSpent += data[key]
+        }
+        averageTimeSpent = handleTime(Math.floor(totalTimeSpent / websitesVisited))
+        totalTimeSpent = handleTime(totalTimeSpent)
+        const dataadd = { date: d, data: data, websitesVisited: websitesVisited, totalTimeSpent: totalTimeSpent, averageTimeSpent: averageTimeSpent }
         const addDataFirstTime = obs.add(dataadd);
         addDataFirstTime.onsuccess = (event) => {
           data = {};
         };
       } else {
         let oldData = event.target.result.data;
+        let websitesVisited = 0
+        let totalTimeSpent = 0
+        let averageTimeSpent = ""
+
         console.log(oldData)
         for (let key in data) {
           if (key === undefined) {
@@ -81,14 +116,20 @@ function addTimeToDB() {
           }
           if (oldData[key] === undefined) {
             oldData[key] = Math.floor(data[key]);
-            websitesVisited++;
           } else {
             oldData[key] = oldData[key] + Math.floor(data[key]);
           }
         }
-        const addDataAgain = obs.put({ date: d, data: oldData, websitesVisited: websitesVisited, totalTimeSpent: oldData.totalTimeSpent + totalTimeSpent });
-        console.log(websitesVisited)
-        console.log(totalTimeSpent)
+
+        // calculate total stats
+        for(let key in oldData) {
+          websitesVisited++
+          totalTimeSpent += oldData[key]
+        }
+
+        averageTimeSpent = handleTime(Math.floor(totalTimeSpent / websitesVisited))
+        totalTimeSpent = handleTime(totalTimeSpent)
+        const addDataAgain = obs.put({ date: d, data: oldData, websitesVisited: websitesVisited, totalTimeSpent: totalTimeSpent, averageTimeSpent: averageTimeSpent });
         addDataAgain.onsuccess = (event) => {
           data = {};
         };
