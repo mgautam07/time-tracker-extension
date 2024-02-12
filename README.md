@@ -1,3 +1,10 @@
+## TODO
+ - [ ] Custom colors to specific websites in pie chart
+ - [ ] Week view
+ - [ ] Month view
+ - [ ] Fallback favicon
+ - [ ] Tooltip
+
 ## Packing
 
 After the development of your extension run the command

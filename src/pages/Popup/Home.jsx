@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import dayjs from 'dayjs'
 import DoughnutChart from './components/DoughtnutChart'
 import WebsiteTimeList from './components/WebsiteTimeList'
+import TotalStats from './components/TotalStats'
 
 function Home() {
   const [date, setDate] = useState(dayjs())
@@ -13,6 +14,11 @@ function Home() {
     {value: 278 },
     {value: 189 },
   ])
+  const [totalData, setTotalData] = useState({
+    totalTimeSpent: "0s",
+    websitesVisited: 0,
+    averageTimeSpent: "0s"
+  })
 
   function reduceDate() {
     setDate(date.subtract(1, 'day'))
@@ -38,7 +44,11 @@ function Home() {
       const getDataRequest = obs.get(date.format('M/D/YYYY'))
       getDataRequest.onsuccess = (event) => {
         let data = event.target.result
-        console.log(Object.keys(data.data).length === 0)
+        setTotalData({
+          totalTimeSpent: data.totalTimeSpent,
+          websitesVisited: data.websitesVisited,
+          averageTimeSpent: data.averageTimeSpent
+        })
         if(Object.keys(data.data).length !== 0) {
           data = data.data
           let arr = []
@@ -49,8 +59,8 @@ function Home() {
           arr.sort((a, b) => {
             return b.value - a.value
           })
-            setDisplayData(arr)
-            console.log(displayData)
+          setDisplayData(arr)
+          console.log(displayData)
         } else {
           setDisplayData([{'name':'no record','value': 1}])
           console.log(displayData)
@@ -67,6 +77,7 @@ function Home() {
       </div>
       {console.log(date.format('D/M/YYYY'))}
       <DoughnutChart displayData={displayData} />
+      <TotalStats totalData={totalData}/>
       <WebsiteTimeList displayData={displayData}/>
       <ul>
         <li>
