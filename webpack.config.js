@@ -52,6 +52,15 @@ var options = {
   },
   module: {
     rules: [
+      // {
+      //   test: /\.tsx?$/,
+      //   use: "ts-loader",
+      //   exclude: /node_modules/
+      // },
+      // {
+      //   test: /\.css$/,
+      //   use: ["style-loader", "css-loader", "postcss-loader"],
+      // },
       {
         // look for .css or .scss files
         test: /\.(css|scss)$/,
@@ -62,6 +71,9 @@ var options = {
           },
           {
             loader: 'css-loader',
+          },
+          {
+            loader: 'postcss-loader',
           },
           {
             loader: 'sass-loader',

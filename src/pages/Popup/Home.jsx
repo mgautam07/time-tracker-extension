@@ -70,6 +70,7 @@ function Home() {
   }, [date])
   return (
     <div>
+      <div className='text-center p-2 text-sm'>Time Keeper</div>
       <div>
         <button onClick={reduceDate}>LA</button>
         {date.format('D/M/YYYY')}
