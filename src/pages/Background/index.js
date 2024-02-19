@@ -22,7 +22,6 @@ request.onupgradeneeded = (event) => {
 // function to update data and url
 
 function urlChange(newUrl) {
-  console.log(data)
   if (newUrl === undefined || (prevUrl === '' && newUrl === '')) {
     return;
   }
@@ -69,6 +68,7 @@ function handleTime(time)
 }
 
 function addTimeToDB() {
+  urlChange('//' + prevUrl)
   let db;
   const request = indexedDB.open('tte');
   request.onerror = (event) => {
