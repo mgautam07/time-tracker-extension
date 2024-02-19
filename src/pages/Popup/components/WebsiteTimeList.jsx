@@ -24,22 +24,30 @@ function WebsiteTimeList(props) {
     return timeString
   }
 
+  function replaceImage(error) {
+    error.target.src = 'error.png'
+  }
+
   return (
-    <div>
-      <ul>
+    <div className='mt-4 mb-12 w-4/5 mx-auto'>
+      <div className='text-left font-semibold mb-1'>Most used websites</div>
+      <ul className='space-y-2'>
         {
           props.displayData.map((el) => {
             return (
-              <li>
-                <img src={'https://' + el.name + '/favicon.ico'} alt="" />
-                {el.name}
-                {handleTime(el.value)}
+              <li className='mx-auto h-9 flex items-center space-x-4 rtl:space-x-reverse  '>
+                <img className='w-6 h-6 rounded-full inline-block' src={'https://' + el.name + '/favicon.ico'} alt="" onError={replaceImage}/>
+                <div className='inline-block flex-1 text-left'>
+                  {el.name}
+                </div>
+                <div className='inline-block min-w-16 font-semibold text-right'>
+                  {handleTime(el.value)}
+                </div>
               </li>
             )
           })
         }
       </ul>
-      
     </div>
   )
 }

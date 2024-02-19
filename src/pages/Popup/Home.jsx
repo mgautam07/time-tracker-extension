@@ -3,6 +3,7 @@ import dayjs from 'dayjs'
 import DoughnutChart from './components/DoughtnutChart'
 import WebsiteTimeList from './components/WebsiteTimeList'
 import TotalStats from './components/TotalStats'
+import { FaChevronLeft, FaChevronRight } from "react-icons/fa"
 
 function Home() {
   const [date, setDate] = useState(dayjs())
@@ -69,26 +70,24 @@ function Home() {
     }
   }, [date])
   return (
-    <div>
-      <div className='text-center p-2 text-sm'>Time Keeper</div>
-      <div>
-        <button onClick={reduceDate}>LA</button>
-        {date.format('D/M/YYYY')}
-        <button onClick={increaseDate}>RA</button>
+    <div className='text-center text-sm'>
+      <div className='p-2 text-base font-medium'>Time Keeper</div>
+      <div className='p-1 '>
+        <button className='mr-8' onClick={reduceDate}> <FaChevronLeft /> </button>
+        <div className='inline-block font-medium'>{date.format('D/M/YYYY')}</div>
+        <button className='ml-8' onClick={increaseDate}> <FaChevronRight /> </button>
       </div>
-      {console.log(date.format('D/M/YYYY'))}
       <DoughnutChart displayData={displayData} />
       <TotalStats totalData={totalData}/>
       <WebsiteTimeList displayData={displayData}/>
-      <ul>
+      {/* <ul>
         <li>
           <a href="#/">Home</a>
         </li>
         <li>
           <a href="#/about">About</a>
         </li>
-      </ul>
-      Home
+      </ul> */}
     </div>
   );
 }

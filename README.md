@@ -2,7 +2,7 @@
  - [ ] Custom colors to specific websites in pie chart
  - [ ] Week view
  - [ ] Month view
- - [ ] Fallback favicon
+ - [x] Fallback favicon
  - [ ] Tooltip
 
 ## Packing
@@ -18,5 +18,5 @@ Now, the content of `build` folder will be the extension ready to be submitted t
 ---
 
 ##### Disclaimer
-1. Chrome has wonky onFocusChanged function
+1. Chrome has wonky onFocusChanged function ([issue](https://issues.chromium.org/issues/41116352))
 2. Extension continues to run if devtools are open and main browser window is closed 
