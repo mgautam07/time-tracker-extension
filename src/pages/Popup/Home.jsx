@@ -28,6 +28,42 @@ function Home() {
   function increaseDate() {
     setDate(date.add(1, 'day'))
   }
+
+  function getColor(el) {
+    console.log(el)
+    switch (el) {
+      case 'youtube.com':
+      case 'music.youtube.com':
+        return '#DC143C'
+      case 'netflix.com':
+        return '#E50914'
+      case 'web.whatsapp.com':
+        return '#25D366'
+      case 'open.spotify.com':
+        return '#1DB954'
+      case 'twitter.com':
+        return '#14171A'
+      case 'instagram.com':
+        return '#C13584'
+      case 'reddit.com':
+        return '#FF5700'
+      case 'leetcode.com':
+        return '#FBBD23'
+      case 'github.com':
+        return '#333'
+      case 'hotstar.com':
+        return '#01147C'
+      case 'primevideo.com':
+        return '#00A8E1'
+      case 'slack.com':
+        return '#ECB32D'
+      default:
+        return '#535C91'
+    }
+  }
+
+  const colorArray = ['#ff7733', '#14cc8f', '#5d2f27', '#aad922', '#4169e1', '#d52941', '#00b3ff', '#5c3df5', '#f53d99'] 
+
   useEffect(() => {
     let db
     const request = indexedDB.open("tte")
@@ -53,9 +89,12 @@ function Home() {
         if(Object.keys(data.data).length !== 0) {
           data = data.data
           let arr = []
+          let i = 0
           for (let key in data) {
             const temp = key.replace('www.', '')
-            arr.push({'name': temp, 'value': Math.floor(data[key])})
+            // const clr = getColor(temp)
+            arr.push({'name': temp, 'value': Math.floor(data[key]), 'color':colorArray[i%colorArray.length]})
+            i++
           }
           arr.sort((a, b) => {
             return b.value - a.value
