@@ -29,18 +29,18 @@ function WebsiteTimeList(props) {
   }
 
   return (
-    <div className='mt-4 mb-12 w-4/5 mx-auto'>
+    <div className='mt-4 w-5/6 mx-auto pb-2'>
       <div className='text-left font-semibold mb-1'>Most used websites</div>
       <ul className='space-y-2'>
         {
           props.displayData.map((el) => {
             return (
-              <li className='mx-auto h-9 flex items-center space-x-4 rtl:space-x-reverse  '>
-                <img className='w-6 h-6 rounded-full inline-block' src={'https://' + el.name + '/favicon.ico'} alt="" onError={replaceImage}/>
-                <div className='inline-block flex-1 text-left'>
+              <li className='mx-auto h-10 flex items-center space-x-4 rtl:space-x-reverse bg-neutral-100 rounded dark:bg-neutral-800'>
+                <img className='w-6 h-6 rounded-full inline-block mx-2 dark:bg-neutral-800' src={'https://' + el.name + '/favicon.ico'} alt="" onError={replaceImage}/>
+                <div className='inline-block flex-1 text-left text truncate'>
                   {el.name}
                 </div>
-                <div className='inline-block min-w-16 font-semibold text-right'>
+                <div className='inline-block min-w-16 font-semibold text-right px-2'>
                   {handleTime(el.value)}
                 </div>
               </li>

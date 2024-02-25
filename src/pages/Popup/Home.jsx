@@ -109,7 +109,7 @@ function Home() {
     }
   }, [date])
   return (
-    <div className='text-center text-sm'>
+    <div className='text-center text-sm dark:text-white dark:bg-neutral-900'>
       <div className='p-2 text-base font-medium'>Time Keeper</div>
       <div className='p-1 '>
         <button className='mr-8' onClick={reduceDate}> <FaChevronLeft /> </button>
