@@ -6,7 +6,10 @@
   "description": "A chromium extension to keep track of time.",
   "icons":
   {
-    "128": "icon-128.png"
+    "128": "icon-128.png",
+    "48": "icon-48.png",
+    "32": "icon-32.png",
+    "16": "icon-16.png"
   },
 
   "background": 
@@ -16,7 +19,7 @@
   {
     "default_title": "Time Tracker",
     "default_popup": "popup.html",
-    "default_icon": {"34" : "icon-34.png"}
+    "default_icon": {"128" : "icon-128.png"}
   },
   "web_accessible_resources": [
     {
