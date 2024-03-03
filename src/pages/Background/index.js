@@ -1,3 +1,5 @@
+import dayjs from "dayjs"
+
 let time = new Date().getTime();
 let data = {};
 let prevUrl = 'newtab';
@@ -45,28 +47,6 @@ function urlChange(newUrl) {
   time = new Date().getTime();
 }
 
-function handleTime(time)
-{
-  let timeString = ""
-  const hours = Math.floor(time / 3600)
-  time = time % 3600
-  if(hours !== 0)
-  {
-    timeString = timeString + hours + 'h '
-  }
-  const minutes = Math.floor(time / 60)
-  if(minutes !== 0)
-  {
-    timeString = timeString + minutes + 'm'
-  }
-  if(hours === 0)
-  {
-    time = time % 60
-    timeString = timeString + ' ' + time + 's'
-  }
-  return timeString
-}
-
 function addTimeToDB() {
   urlChange('//' + prevUrl)
   let db;
@@ -82,7 +62,7 @@ function addTimeToDB() {
     };
     console.log(data)
     const obs = transaction.objectStore('time');
-    const d = new Date().toLocaleDateString();
+    const d = dayjs().format('D/M/YYYY')
     const getDataRequest = obs.get(d);
     getDataRequest.onsuccess = (event) => {
       if (event.target.result === undefined) {
@@ -96,8 +76,7 @@ function addTimeToDB() {
           websitesVisited++
           totalTimeSpent += data[key]
         }
-        averageTimeSpent = handleTime(Math.floor(totalTimeSpent / websitesVisited))
-        totalTimeSpent = handleTime(totalTimeSpent)
+        averageTimeSpent = Math.floor(totalTimeSpent / websitesVisited)
         const dataadd = { date: d, data: data, websitesVisited: websitesVisited, totalTimeSpent: totalTimeSpent, averageTimeSpent: averageTimeSpent }
         const addDataFirstTime = obs.add(dataadd);
         addDataFirstTime.onsuccess = (event) => {
@@ -127,8 +106,7 @@ function addTimeToDB() {
           totalTimeSpent += oldData[key]
         }
 
-        averageTimeSpent = handleTime(Math.floor(totalTimeSpent / websitesVisited))
-        totalTimeSpent = handleTime(totalTimeSpent)
+        averageTimeSpent = Math.floor(totalTimeSpent / websitesVisited)
         const addDataAgain = obs.put({ date: d, data: oldData, websitesVisited: websitesVisited, totalTimeSpent: totalTimeSpent, averageTimeSpent: averageTimeSpent });
         addDataAgain.onsuccess = (event) => {
           data = {};

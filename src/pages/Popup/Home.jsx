@@ -78,9 +78,10 @@ function Home() {
         console.error("Database error: ", event.target.errorCode)
       }
       const obs = transaction.objectStore("time")
-      const getDataRequest = obs.get(date.format('M/D/YYYY'))
+      const getDataRequest = obs.get(date.format('D/M/YYYY'))
       getDataRequest.onsuccess = (event) => {
         let data = event.target.result
+        console.log(date.format('D/M/YYYY'))
         setTotalData({
           totalTimeSpent: data.totalTimeSpent,
           websitesVisited: data.websitesVisited,
@@ -113,7 +114,7 @@ function Home() {
       <div className='p-2 text-base font-medium'>Time Keeper</div>
       <div className='p-1 '>
         <button className='mr-8' onClick={reduceDate}> <FaChevronLeft /> </button>
-        <div className='inline-block font-medium'>{date.format('D/M/YYYY')}</div>
+        <div className='inline-block font-medium min-w-20'>{date.format('D/M/YYYY')}</div>
         <button className='ml-8' onClick={increaseDate}> <FaChevronRight /> </button>
       </div>
       <DoughnutChart displayData={displayData} />
