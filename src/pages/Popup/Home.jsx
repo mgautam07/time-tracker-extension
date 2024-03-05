@@ -30,7 +30,6 @@ function Home() {
   }
 
   function getColor(el) {
-    console.log(el)
     switch (el) {
       case 'youtube.com':
       case 'music.youtube.com':
@@ -72,7 +71,6 @@ function Home() {
     }
     request.onsuccess = (event) => {
       db = event.target.result
-      console.log("Database opened successfully")
       const transaction = db.transaction(["time"])
       transaction.onerror = (event) => {
         console.error("Database error: ", event.target.errorCode)
@@ -90,7 +88,6 @@ function Home() {
           setDisplayData([{'name':'no record','value': 1}])
           return
         }
-        console.log(date.format('D/M/YYYY'))
         setTotalData({
           totalTimeSpent: data.totalTimeSpent,
           websitesVisited: data.websitesVisited,
@@ -110,17 +107,15 @@ function Home() {
             return b.value - a.value
           })
           setDisplayData(arr)
-          console.log(displayData)
         } else {
           setDisplayData([{'name':'no record','value': 1}])
-          console.log(displayData)
         }
       }
     }
   }, [date])
   return (
     <div className='text-center text-sm dark:text-white dark:bg-neutral-900 min-h-[600px]'>
-      <div className='p-2 text-base font-medium'>Time Keeper</div>
+      <div className='p-2 text-base font-medium'>Web Time Tracker</div>
       <div className='p-1 '>
         <button className='mr-8' onClick={reduceDate}> <FaChevronLeft /> </button>
         <div className='inline-block font-medium min-w-20'>{date.format('D/M/YYYY')}</div>

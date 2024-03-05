@@ -42,9 +42,9 @@ function WebsiteTimeList(props) {
       <div className='text-left font-semibold mb-1'>Most used websites</div>
       <ul className='space-y-2'>
         {
-          props.displayData.map((el) => {
+          props.displayData.map((el, index) => {
             return (
-              <li className='mx-auto h-10 flex items-center space-x-4 rtl:space-x-reverse bg-neutral-100 rounded dark:bg-neutral-800'>
+              <li key={index} className='mx-auto h-10 flex items-center space-x-4 rtl:space-x-reverse bg-neutral-100 rounded dark:bg-neutral-800'>
                 <img className='w-6 h-6 rounded-full inline-block mx-2 dark:bg-neutral-800' src={getFavicon(el.name)} alt="" onError={replaceImage}/>
                 <div className='inline-block flex-1 text-left text truncate'>
                   {el.name}

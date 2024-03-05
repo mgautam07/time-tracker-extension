@@ -60,7 +60,6 @@ function addTimeToDB() {
     transaction.onerror = (event) => {
       console.error('Database error: ', event.target.errorCode);
     };
-    console.log(data)
     const obs = transaction.objectStore('time');
     const d = dayjs().format('D/M/YYYY')
     const getDataRequest = obs.get(d);
@@ -88,7 +87,6 @@ function addTimeToDB() {
         let totalTimeSpent = 0
         let averageTimeSpent = ""
 
-        console.log(oldData)
         for (let key in data) {
           if (key === undefined) {
             continue;
