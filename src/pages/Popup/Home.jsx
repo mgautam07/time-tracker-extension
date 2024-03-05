@@ -81,6 +81,15 @@ function Home() {
       const getDataRequest = obs.get(date.format('D/M/YYYY'))
       getDataRequest.onsuccess = (event) => {
         let data = event.target.result
+        if(data === undefined) {
+          setTotalData({
+            totalTimeSpent: 0,
+            wbsitesVisited: 0,
+            averageTimeSpent: 0
+          })
+          setDisplayData([{'name':'no record','value': 1}])
+          return
+        }
         console.log(date.format('D/M/YYYY'))
         setTotalData({
           totalTimeSpent: data.totalTimeSpent,
@@ -110,7 +119,7 @@ function Home() {
     }
   }, [date])
   return (
-    <div className='text-center text-sm dark:text-white dark:bg-neutral-900'>
+    <div className='text-center text-sm dark:text-white dark:bg-neutral-900 min-h-[600px]'>
       <div className='p-2 text-base font-medium'>Time Keeper</div>
       <div className='p-1 '>
         <button className='mr-8' onClick={reduceDate}> <FaChevronLeft /> </button>
