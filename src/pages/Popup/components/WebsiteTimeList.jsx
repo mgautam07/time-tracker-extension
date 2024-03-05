@@ -28,6 +28,15 @@ function WebsiteTimeList(props) {
     error.target.src = 'error.png'
   }
 
+  function getFavicon(domain) {
+    if (domain !== undefined) {
+      domain = domain.toString()
+      if(domain.includes('.'))
+        return `https://www.google.com/s2/favicons?domain=${domain}&sz=128`
+    }
+    return 'error.png'
+  }
+
   return (
     <div className='mt-4 w-5/6 mx-auto pb-2'>
       <div className='text-left font-semibold mb-1'>Most used websites</div>
@@ -36,7 +45,7 @@ function WebsiteTimeList(props) {
           props.displayData.map((el) => {
             return (
               <li className='mx-auto h-10 flex items-center space-x-4 rtl:space-x-reverse bg-neutral-100 rounded dark:bg-neutral-800'>
-                <img className='w-6 h-6 rounded-full inline-block mx-2 dark:bg-neutral-800' src={'https://' + el.name + '/favicon.ico'} alt="" onError={replaceImage}/>
+                <img className='w-6 h-6 rounded-full inline-block mx-2 dark:bg-neutral-800' src={getFavicon(el.name)} alt="" onError={replaceImage}/>
                 <div className='inline-block flex-1 text-left text truncate'>
                   {el.name}
                 </div>

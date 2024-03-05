@@ -17,6 +17,7 @@ Now, the content of `build` folder will be the extension ready to be submitted t
 
 ---
 Icons - recraft.ai
+Get favicon of any website - [dev.to](https://dev.to/derlin/get-favicons-from-any-website-using-a-hidden-google-api-3p1e)
 ##### Disclaimer
 1. Chrome has wonky onFocusChanged function ([issue](https://issues.chromium.org/issues/41116352))
 2. Extension continues to run if devtools are open and main browser window is closed 
