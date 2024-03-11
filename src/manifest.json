@@ -27,6 +27,6 @@
       "matches": []
     }
   ],
-  "permissions": ["storage", "tabs", "alarms", "windows"],
+  "permissions": ["storage", "tabs", "alarms", "windows", "idle"],
   "host_permissions": ["<all_urls>"]
 }

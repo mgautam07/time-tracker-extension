@@ -116,7 +116,7 @@ function addTimeToDB() {
 
 chrome.windows.onFocusChanged.addListener(function (windowId) {
   if (windowId === chrome.windows.WINDOW_ID_NONE) {
-    urlChange('');
+    urlChange('//');
   } else {
     chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
       urlChange(tabs[0].url);
@@ -143,3 +143,14 @@ chrome.alarms.onAlarm.addListener(function (alarm) {
 });
 
 chrome.alarms.create('addData', { periodInMinutes: 0.5, delayInMinutes: 0.5 });
+
+chrome.idle.setDetectionInterval(30)
+
+chrome.idle.onStateChanged.addListener((newState) => {
+  if(newState === "locked")
+    urlChange('//')
+  else
+    chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+      urlChange(tabs[0].url)
+    })
+})
