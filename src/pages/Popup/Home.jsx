@@ -114,9 +114,13 @@ function Home() {
     }
   }, [date])
   return (
-    <div className='text-center text-sm dark:text-white dark:bg-neutral-900 min-h-[600px]'>
-      <div className='p-2 text-base font-medium'>Web Time Tracker</div>
-      <div className='p-1 '>
+    <div>
+      <div className='min-h-8 grid grid-cols-3 font-medium text-center pt-1'>
+        <a className='border-b-2' href="#/">Home</a>
+        <a className='text-neutral-500 dark:text-neutral-400' href="#/week">Week</a>
+        <a className='text-neutral-500 dark:text-neutral-400' href="#/webtimers">Web Timers</a>
+      </div>
+      <div className='p-1 pt-2'>
         <button className='mr-8' onClick={reduceDate}> <FaChevronLeft /> </button>
         <div className='inline-block font-medium min-w-20'>{date.format('D/M/YYYY')}</div>
         <button className='ml-8' onClick={increaseDate}> <FaChevronRight /> </button>
