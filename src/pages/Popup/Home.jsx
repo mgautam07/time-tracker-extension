@@ -76,7 +76,7 @@ function Home() {
         console.error("Database error: ", event.target.errorCode)
       }
       const obs = transaction.objectStore("time")
-      const getDataRequest = obs.get(date.format('D/M/YYYY'))
+      const getDataRequest = obs.get(date.format('YYYY/MM/DD'))
       getDataRequest.onsuccess = (event) => {
         let data = event.target.result
         if(data === undefined) {
@@ -114,7 +114,7 @@ function Home() {
     }
   }, [date])
   return (
-    <div>
+    <div className='min-h-[565px]'>
       <div className='min-h-8 grid grid-cols-3 font-medium text-center pt-1'>
         <a className='border-b-2' href="#/">Home</a>
         <a className='text-neutral-500 dark:text-neutral-400' href="#/week">Week</a>
@@ -128,14 +128,6 @@ function Home() {
       <DoughnutChart displayData={displayData} />
       <TotalStats totalData={totalData}/>
       <WebsiteTimeList displayData={displayData}/>
-      {/* <ul>
-        <li>
-          <a href="#/">Home</a>
-        </li>
-        <li>
-          <a href="#/about">About</a>
-        </li>
-      </ul> */}
     </div>
   );
 }

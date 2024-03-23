@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "author": "mgautam07",
   "name": "Web Time Tracker",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "A chromium extension to keep track of time.",
   "icons":
   {

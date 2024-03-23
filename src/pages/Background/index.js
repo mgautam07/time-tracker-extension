@@ -61,7 +61,7 @@ function addTimeToDB() {
       console.error('Database error: ', event.target.errorCode);
     };
     const obs = transaction.objectStore('time');
-    const d = dayjs().format('D/M/YYYY')
+    const d = dayjs().format('YYYY/MM/DD')
     const getDataRequest = obs.get(d);
     getDataRequest.onsuccess = (event) => {
       if (event.target.result === undefined) {
